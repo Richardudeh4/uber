@@ -1,10 +1,11 @@
-import { StyleSheet, Text, View } from 'react-native'
+import { StyleSheet, Text, TouchableOpacity, View } from 'react-native'
 import React, { useEffect, useState } from 'react'
 import MapView, { Marker, PROVIDER_DEFAULT } from 'react-native-maps';
 import { useDriverStore, useLocationStore } from '@/store';
 import { calculateRegion, generateMarkersFromData } from '@/lib/map';
 import { MarkerData } from '@/types/type';
 import { icons } from '@/constants';
+import { router } from 'expo-router';
 
 const drivers =
  [
@@ -46,6 +47,14 @@ const drivers =
   }
 ]
 const Map = () => {
+  const { setUserLocation, setDestinationLocation} = useLocationStore();
+  const handleDestinationPress = (location: {
+    latitude:number, longitude: number, address: string
+  }) => {
+    setDestinationLocation(location);
+
+    router.push("/(root)/find-ride");
+  }
   const { userLongitude, userLatitude, destinationLatitude, destinationLongitude} = useLocationStore();
   const region = calculateRegion({
     userLongitude, 
@@ -77,6 +86,7 @@ const Map = () => {
     showsUserLocation={true}
     userInterfaceStyle="light"
     >
+    
       {
         markers.map((marker) => (
           <Marker

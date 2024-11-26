@@ -4,7 +4,7 @@ import RideCard from '@/components/RideCard'
 import { icons, images } from '@/constants'
 import { useLocationStore } from '@/store'
 import { SignedIn, SignedOut, useUser } from '@clerk/clerk-expo'
-import { Link } from 'expo-router'
+import { Link, router } from 'expo-router'
 import { useEffect, useState } from 'react'
 import { ActivityIndicator, FlatList, Image, Text, TouchableOpacity, View } from 'react-native'
 import { SafeAreaView } from 'react-native-safe-area-context'
@@ -144,7 +144,13 @@ export default function Page() {
   const handleSignOut = () => {
 
   }
-  const handleDestinationPress = () => {}
+  const handleDestinationPress = (location: {
+    latitude:number, longitude: number, address: string
+  }) => {
+    setDestinationLocation(location);
+
+    router.push("/(root)/find-ride");
+  }
     return (
     <SafeAreaView className='bg-general-500 '>
     <FlatList 
@@ -191,7 +197,7 @@ export default function Page() {
       <Text className="text-xl font-JakartaBold mt-5 mb-3">
         Your Current Location
       </Text>
-      <View className='flex flex-row items-center bg-transparent h-[300px] '>
+      <View  className='flex flex-row items-center bg-transparent h-[300px] '>
             <Map/>
       </View>
       </>
